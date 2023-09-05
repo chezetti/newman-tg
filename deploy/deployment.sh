@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Директория проекта
-PROJECT_DIR="/path/to/your/project"
+PROJECT_DIR="/newman-tg"
 # Имя приложения в pm2
 PM2_APP_NAME="newman"
 
