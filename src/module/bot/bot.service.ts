@@ -17,7 +17,7 @@ const sleep = promisify(setTimeout);
 @Injectable()
 export class BotService implements OnModuleInit {
   private readonly messagesConfig = botConfig.messages;
-  private mathProblemActive = false;
+  // private mathProblemActive = false;
   private currentProblem = '';
   private correctAnswer = 0;
 
@@ -49,26 +49,6 @@ export class BotService implements OnModuleInit {
         }
       });
     }
-
-    this.bot.use(async (ctx, next) => {
-      if (this.mathProblemActive && ctx.updateType === 'message') {
-        const messageText = ctx.message.text;
-
-        if (!isNaN(Number(messageText))) {
-          const response = await this.checkAnswer(ctx);
-          await ctx.reply(response);
-        }
-      }
-
-      return next();
-    });
-
-    setInterval(
-      () => {
-        this.generateMathProblem();
-      },
-      15 * 60 * 1000,
-    );
   }
 
   get methodsList(): {
@@ -199,30 +179,30 @@ export class BotService implements OnModuleInit {
     }
   }
 
-  async generateMathProblem() {
-    const a = Math.floor(Math.random() * 54);
-    const b = Math.floor(Math.random() * 87);
-    this.currentProblem = `${a} + ${b}`;
-    this.correctAnswer = a + b;
+  // async generateMathProblem() {
+  //   const a = Math.floor(Math.random() * 54);
+  //   const b = Math.floor(Math.random() * 87);
+  //   this.currentProblem = `${a} + ${b}`;
+  //   this.correctAnswer = a + b;
 
-    await this.bot.telegram.sendMessage(
-      '-1001857974024',
-      `Реши пример: ${this.currentProblem}`,
-    );
-    this.mathProblemActive = true;
-  }
+  //   await this.bot.telegram.sendMessage(
+  //     '-1001857974024',
+  //     `Реши пример: ${this.currentProblem}`,
+  //   );
+  //   this.mathProblemActive = true;
+  // }
 
-  async checkAnswer(ctx: Context) {
-    const userAnswer = parseInt(ctx.message.text, 10);
+  // async checkAnswer(ctx: Context) {
+  //   const userAnswer = parseInt(ctx.message.text, 10);
 
-    if (userAnswer === this.correctAnswer) {
-      this.mathProblemActive = false;
+  //   if (userAnswer === this.correctAnswer) {
+  //     this.mathProblemActive = false;
 
-      return 'Поздравляю! Твой ответ правильный!';
-    } else {
-      return 'Ответ неверный.';
-    }
-  }
+  //     return 'Поздравляю! Твой ответ правильный!';
+  //   } else {
+  //     return 'Ответ неверный.';
+  //   }
+  // }
 
   async tictactoe(ctx: Context) {
     const chatId = ctx.chat.id;
